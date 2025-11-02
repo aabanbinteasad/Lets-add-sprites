@@ -5,9 +5,9 @@ SPRITE_COLOR_CHANGE_EVENT = pygame.USEREVENT + 1
 BACKGOROUND_COLOR_CHANGE_EVENT = pygame.USEREVENT + 2
 
 BLUE = pygame.color('blue')
-RED = pygame.color('red')
-GREEN = pygame.color('green')
-YELLOW = pygame.color('yellow')
+MAGENTA = pygame.color('magenta')
+ORANGE = pygame.color('orange')
+WHITE = pygame.color('white')
 
 class sprite(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
@@ -29,21 +29,21 @@ class sprite(pygame.sprite.Sprite):
             boundary_hit = True
 
     def change_color(self, color):
-        self.image.fill(random.choice([BLUE, RED, GREEN, YELLOW]))
+        self.image.fill(random.choice([BLUE, MAGENTA, ORANGE, WHITE]))
 
     def change_background_color():
         global bg_color
-        bg_color = random.choice([BLUE, RED, GREEN, YELLOW])
+        bg_color = random.choice([BLUE, ORANGE])
 
     all_sprites_list = pygame.sprite.Group()
-    sp1 = Sprite(WHITE, 20, 20)
+    sp1 = (WHITE, 20, 30)
     sp1.rect.x = random.randint(0, 480)
     sp1.rect.y = random.randint(0, 370)
     all_sprites_list.add(sp1)
 
     screen = pygame.display.set_mode((500, 400))
     pygame.display.set_caption("Colorful Bounce")
-    bg_color = YELLOW
+    bg_color = BLUE
     screen.fill(bg_color)
 
     exit = False
@@ -53,3 +53,17 @@ class sprite(pygame.sprite.Sprite):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit = True
+
+            elif event.type == SPRITE_COLOR_CHANGE_EVENT:
+                sp1.change_color()
+
+            elif event.type == BACKGOROUND_COLOR_CHANGE_EVENT:
+                change_background_color()
+
+        all_sprites_list.update()
+        screen.fill(bg_color)
+        all_sprites_list.draw(screen)
+
+        pygame.display.flip()
+        clock.tick(240)
+    pygame.quit()
